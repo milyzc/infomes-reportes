@@ -22,7 +22,8 @@ namespace ReportesVentas.Reportes
         private void BicicletasPorCategoria_Load(object sender, EventArgs e)
         {
             this.RwBicisPorCategoria.RefreshReport();
-            CantBicisPorCategoriaDSTableAdapters.categoriasTableAdapter adapter = new CantBicisPorCategoriaDSTableAdapters.categoriasTableAdapter();
+            CantBicisPorCategoriaDSTableAdapters.categoriasTableAdapter adapter = 
+                new CantBicisPorCategoriaDSTableAdapters.categoriasTableAdapter();
             var data = new CantBicisPorCategoriaDS.categoriasDataTable();
 
             ////// obtengo datos a mostrar          

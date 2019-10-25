@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="BicicletasVendidasUltimoMes" targetNamespace="http://tempuri.org/BicicletasVendidasUltimoMes.xsd" xmlns:mstns="http://tempuri.org/BicicletasVendidasUltimoMes.xsd" xmlns="http://tempuri.org/BicicletasVendidasUltimoMes.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="bicicleteriaConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="bicicleteriaConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.ReportesVentas.Properties.Settings.GlobalReference.Default.bicicleteriaConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="marcasTableAdapter" GeneratorDataComponentClassName="marcasTableAdapter" Name="marcas" UserDataComponentName="marcasTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="bicicleteriaConnectionString (Settings)" DbObjectName="bicicleteria.dbo.marcas" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT m.brand_name AS Marca, COUNT(*) AS Cantidad
+FROM     detalles_venta AS d INNER JOIN
+                  bicicletas AS b ON d.product_id = b.product_id INNER JOIN
+                  marcas AS m ON m.brand_id = b.brand_id INNER JOIN
+                  ventas AS v ON v.order_id = d.order_id
+WHERE  (CAST(v.order_date AS DATE) &lt;= DATEADD(month, - 1, GETDATE())) AND (CAST(v.order_date AS DATE) &lt;= GETDATE())
+GROUP BY m.brand_name
+ORDER BY Cantidad DESC, Marca</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="Marca" DataSetColumn="Marca" />
+              <Mapping SourceColumn="Cantidad" DataSetColumn="Cantidad" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="BicicletasVendidasUltimoMes" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="BicicletasVendidasUltimoMes" msprop:Generator_UserDSName="BicicletasVendidasUltimoMes">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="marcas" msprop:Generator_TableClassName="marcasDataTable" msprop:Generator_TableVarName="tablemarcas" msprop:Generator_TablePropName="marcas" msprop:Generator_RowDeletingName="marcasRowDeleting" msprop:Generator_RowChangingName="marcasRowChanging" msprop:Generator_RowEvHandlerName="marcasRowChangeEventHandler" msprop:Generator_RowDeletedName="marcasRowDeleted" msprop:Generator_UserTableName="marcas" msprop:Generator_RowChangedName="marcasRowChanged" msprop:Generator_RowEvArgName="marcasRowChangeEvent" msprop:Generator_RowClassName="marcasRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Marca" msprop:Generator_ColumnVarNameInTable="columnMarca" msprop:Generator_ColumnPropNameInRow="Marca" msprop:Generator_ColumnPropNameInTable="MarcaColumn" msprop:Generator_UserColumnName="Marca">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Cantidad" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnCantidad" msprop:Generator_ColumnPropNameInRow="Cantidad" msprop:Generator_ColumnPropNameInTable="CantidadColumn" msprop:Generator_UserColumnName="Cantidad" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

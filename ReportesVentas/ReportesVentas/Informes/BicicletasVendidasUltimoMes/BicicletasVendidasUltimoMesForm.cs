@@ -34,5 +34,27 @@ namespace ReportesVentas.Informes.ClientesPorCiudad
 
             this.RwBicicletas.RefreshReport();
         }
+
+        private void BtnConsultar_Click(object sender, EventArgs e)
+        {
+            this.RwBicicletas.RefreshReport();
+            Informes.BicicletasVendidasUltimoMes.BicicletasVendidasUltimoMesTableAdapters.marcasTableAdapter adapter
+                = new Informes.BicicletasVendidasUltimoMes.BicicletasVendidasUltimoMesTableAdapters.marcasTableAdapter();
+            var data = new Informes.BicicletasVendidasUltimoMes.BicicletasVendidasUltimoMes.marcasDataTable();
+
+            ////// obtengo datos a mostrar          
+            data = adapter.GetDataByFecha(DTPFecha.Value.Date);
+
+            ////// creo el parametro CantBicisPorCategoriaDS con el calor datos;
+            var ds = new ReportDataSource("bicicletasDS", (DataTable) data);
+
+
+            RwBicicletas.LocalReport.DataSources.Clear();
+
+            ////// envio este parametro al reporte
+            RwBicicletas.LocalReport.DataSources.Add(ds);
+
+            this.RwBicicletas.RefreshReport();
+        }
     }
 }

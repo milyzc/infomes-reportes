@@ -764,7 +764,7 @@ namespace ReportesVentas.Informes.BicicletasVendidasUltimoMes.BicicletasVendidas
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = @"SELECT m.brand_name AS Marca, COUNT(*) AS Cantidad
@@ -776,6 +776,18 @@ WHERE  (CAST(v.order_date AS DATE) <= DATEADD(month, - 1, GETDATE())) AND (CAST(
 GROUP BY m.brand_name
 ORDER BY Cantidad DESC, Marca";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = @"SELECT m.brand_name AS Marca, COUNT(*) AS Cantidad
+FROM     detalles_venta AS d INNER JOIN
+                  bicicletas AS b ON d.product_id = b.product_id INNER JOIN
+                  marcas AS m ON m.brand_id = b.brand_id INNER JOIN
+                  ventas AS v ON v.order_id = d.order_id
+WHERE  (DATEPART(month, v.order_date) = DATEPART(month, @fecha)) AND (DATEPART(year, v.order_date) = DATEPART(year, @fecha))
+GROUP BY m.brand_name
+ORDER BY Cantidad DESC, Marca";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fecha", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -797,6 +809,32 @@ ORDER BY Cantidad DESC, Marca";
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
         public virtual BicicletasVendidasUltimoMes.marcasDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
+            BicicletasVendidasUltimoMes.marcasDataTable dataTable = new BicicletasVendidasUltimoMes.marcasDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillBy(BicicletasVendidasUltimoMes.marcasDataTable dataTable, System.DateTime fecha) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            this.Adapter.SelectCommand.Parameters[0].Value = ((System.DateTime)(fecha));
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual BicicletasVendidasUltimoMes.marcasDataTable GetDataByFecha(System.DateTime fecha) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            this.Adapter.SelectCommand.Parameters[0].Value = ((System.DateTime)(fecha));
             BicicletasVendidasUltimoMes.marcasDataTable dataTable = new BicicletasVendidasUltimoMes.marcasDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
